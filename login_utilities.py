@@ -12,7 +12,7 @@ def check_pwd(plaintext, hashed):
     :param hashed: the hashed password retrieved from the database
     :return: if the user's entered password matches the one in the database
     """
-    return bcrypt.hashpw(plaintext, hashed) == hashed
+    return bcrypt.hashpw(plaintext.encode('utf-8'), hashed.encode('utf-8')) == hashed
 
 def create_user(username, password, account_type):
     """
