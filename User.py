@@ -13,11 +13,21 @@ class User(UserMixin):
     CONN = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
     CUR = CONN.cursor()
-    CUR.execute('SELECT * FROM users')
-    USERS = CUR.fetchall() # schema [id, pwd, account_type]
+    CUR.execute('SELECT id, password FROM users')
+    USERS = dict(CUR.fetchall()) # [id: password, id2: password, ...]
 
     def __init_(self, id):
         if not id in self.USERS:
             raise UserNotFoundException
         self.id = id
-        self.password = self.USERS[pwd]
+        self.password = self.USERS[id]
+
+    @classmethod
+    def get(self_class, id):
+        """
+        Returns a user instance of id or None if doesn't exist
+        """
+        try:
+            return self_class(id)
+        except UserNotFoundException:
+            return None
