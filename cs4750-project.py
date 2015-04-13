@@ -34,11 +34,29 @@ def requires_roles(*roles):
 def hello_world():
     return 'Hello World!'
 
-@app.route('/admin')
+@app.route('/control/admin')
 @login_required
 @requires_roles('admin')
 def admin_cp():
     return render_template('admin_cp.html')
+
+@app.route('/control/student')
+@login_required
+@requires_roles('student')
+def student_cp():
+    return render_template('student_cp.html')
+
+@app.route('/control/ta')
+@login_required
+@requires_roles('ta')
+def ta_cp():
+    return render_template('ta_cp.html')
+
+@app.route('/control/instructor_cp')
+@login_required
+@requires_roles('instructor')
+def instructor_cp():
+    return render_template('instructor_cp.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -50,9 +68,17 @@ def login():
         hashed_pwd = User.get(username)
         if hashed_pwd and check_login(username, password):
             user = User(username)
-            # Still need to grab and check against role to redirect to right CP
             login_user(user)
-            return redirect(url_for('admin_cp'))
+            if user.get_role() == 'admin':
+                return redirect(url_for('admin_cp'))
+            elif user.get_role() == 'student':
+                return redirect(url_for('student_cp'))
+            elif user.get_role() == 'ta':
+                return redirect(url_for('ta_cp'))
+            elif user.get_role() == 'instructor':
+                return redirect(url_for('instructor_cp'))
+            else:
+                return redirect(url_for('hello_world'))
         else:
             return redirect(url_for('login'))
     return render_template('login.html')
