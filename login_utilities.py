@@ -71,7 +71,3 @@ def check_login(username, password):
         authorized_login = check_pwd(password, hashed_pwd)
 
     return authorized_login
-
-
-# create_user('admin', 'password', 'admin')
-print check_login('admin', 'password')
