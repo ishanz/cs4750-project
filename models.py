@@ -19,6 +19,10 @@ class User(UserMixin):
     USERS = dict(CUR.fetchall()) # [id: password, id2: password, ...]
     CUR.execute('SELECT id, account_type FROM users')
     ACCOUNT_TYPES = dict(CUR.fetchall()) # [id: account_type, id2: account_type2, ...]
+    CUR.execute('SELECT id, first_name FROM users')
+    FIRST_NAMES = dict(CUR.fetchall()) # [id: first_name, id2: first_name2, ...]
+    CUR.execute('SELECT id, last_name FROM users')
+    LAST_NAMES = dict(CUR.fetchall()) # [id: last_name, id2: last_name2, ...]
     CUR.close()
     CONN.close()
 
@@ -28,6 +32,9 @@ class User(UserMixin):
         self.id = id
         self.password = self.USERS[id]
         self.account_type = self.ACCOUNT_TYPES[id]
+        self.name = 'NULL NULL'
+        if self.FIRST_NAMES[id] is not None:
+            self.name = self.FIRST_NAMES[id] + ' ' + self.LAST_NAMES[id]
 
     def is_authenticated(self):
         return True
@@ -43,6 +50,9 @@ class User(UserMixin):
 
     def get_role(self):
         return self.account_type
+
+    def get_name(self):
+        return self.name
 
     @classmethod
     def get(cls, id):

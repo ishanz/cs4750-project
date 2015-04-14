@@ -14,7 +14,7 @@ def check_pwd(plaintext, hashed):
     """
     return bcrypt.hashpw(plaintext.encode('utf-8'), hashed.encode('utf-8')) == hashed
 
-def create_user(username, password, account_type):
+def create_user(username, password, account_type, first_name, last_name):
     """
     :param username
     :param password
@@ -29,7 +29,8 @@ def create_user(username, password, account_type):
     cur = conn.cursor()
 
     # Execute the insertion query and commit the changes
-    cur.execute("INSERT INTO users VALUES ('" + username + "', '" + h + "', '" + account_type + "');")
+    cur.execute("INSERT INTO users VALUES ('" + username + "', '" + h + "', '"
+                + account_type + "', '" + first_name + "', '" + last_name + "');")
     conn.commit()
 
     # Check the result
@@ -39,6 +40,23 @@ def create_user(username, password, account_type):
     # Close the connection
     cur.close()
     conn.close()
+
+def delete_user(username):
+    conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+    cur = conn.cursor()
+
+    # Print pre-delete
+    cur.execute("SELECT * FROM users")
+    print cur.fetchall()
+
+    # Delete the user
+    cur.execute("DELETE FROM users WHERE id = '" + username + "'")
+    conn.commit()
+
+    # Print post-delete
+    cur.execute("SELECT * FROM users")
+    print cur.fetchall()
 
 def check_login(username, password):
     """
@@ -71,3 +89,6 @@ def check_login(username, password):
         authorized_login = check_pwd(password, hashed_pwd)
 
     return authorized_login
+
+# create_user('mst3k', 'password', 'student', 'Mystery', 'Man')
+# delete_user('mst3k')
