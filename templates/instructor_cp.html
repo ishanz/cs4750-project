@@ -5,8 +5,13 @@
     <title></title>
 </head>
 <body>
-Welcome to the instructor control panel, {{ current_user.get_name() }}.  <br>
-
+Welcome to the instructor control panel, {{ user.get_name() }}.  <br><br>
+<div class="container">
+    <h1>Classes</h1><br>
+    {% for course in course_data %}
+        <p>{% print course[2] %}</p>
+    {% endfor %}
+</div>
 <a href="/logout">Logout.</a>
 <a href="http://www.google.com">Go f*ck yourself.</a>
 </body>

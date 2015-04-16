@@ -57,13 +57,12 @@ def ta_cp():
 @login_required
 @requires_roles('instructor')
 def instructor_cp():
-    user = current_user;
-
+    user = current_user
     username = user.get_id()
     instructor = Instructor(username)
     course_data = instructor.show_courses() # Can use this to show course data for instructor
-
-    return render_template('instructor_cp.html', user=user)
+    #student_list = instructor.show_students('cid1')
+    return render_template('instructor_cp.html', user=user, course_data=course_data)
 
 
 @app.route('/', methods=['GET', 'POST'])
