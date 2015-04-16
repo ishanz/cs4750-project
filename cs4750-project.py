@@ -62,6 +62,10 @@ def instructor_cp():
     instructor = Instructor(username)
     course_data = instructor.show_courses() # Can use this to show course data for instructor
     #student_list = instructor.show_students('cid1')
+    #assignment_list = instructor.show_assignments('cid1')
+    #ta_list = instructor.show_tas('cid1')
+    #resource_list = instructor.show_resources('cid1')
+    submission_list = instructor.show_submissions('cid1')
     return render_template('instructor_cp.html', user=user, course_data=course_data)
 
 
