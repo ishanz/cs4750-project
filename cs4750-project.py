@@ -3,6 +3,7 @@ from flask.ext.login import LoginManager, UserMixin, current_user, login_user, l
 from login_utilities import check_login
 from models import User
 from functools import wraps
+from Instructor import Instructor
 
 # Begin Flask run
 
@@ -56,7 +57,13 @@ def ta_cp():
 @login_required
 @requires_roles('instructor')
 def instructor_cp():
-    return render_template('instructor_cp.html')
+    user = current_user;
+
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.show_courses() # Can use this to show course data for instructor
+
+    return render_template('instructor_cp.html', user=user)
 
 
 @app.route('/', methods=['GET', 'POST'])
