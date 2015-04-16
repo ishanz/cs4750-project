@@ -29,7 +29,7 @@ def create_user(username, password, account_type, first_name, last_name):
     cur = conn.cursor()
 
     # Execute the insertion query and commit the changes
-    cur.execute("INSERT INTO users VALUES ('" + username + "', '" + h + "', '"
+    cur.execute("INSERT INTO users(id, pwd, account_type, first_name, last_name) VALUES ('" + username + "', '" + h + "', '"
                 + account_type + "', '" + first_name + "', '" + last_name + "');")
     conn.commit()
 
@@ -57,6 +57,9 @@ def delete_user(username):
     # Print post-delete
     cur.execute("SELECT * FROM users")
     print cur.fetchall()
+
+    cur.close()
+    conn.close()
 
 def check_login(username, password):
     """
@@ -91,4 +94,4 @@ def check_login(username, password):
     return authorized_login
 
 # create_user('mst3k', 'password', 'student', 'Mystery', 'Man')
-# delete_user('mst3k')
+# delete_user('sih9zm')

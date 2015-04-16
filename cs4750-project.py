@@ -30,7 +30,7 @@ def requires_roles(*roles):
         return wrapped
     return wrapper
 
-@app.route('/')
+@app.route('/hello_world')
 def hello_world():
     return 'Hello World!'
 
@@ -59,7 +59,7 @@ def instructor_cp():
     return render_template('instructor_cp.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     # Validate credentials
     if request.method == 'POST':
