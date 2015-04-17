@@ -89,6 +89,24 @@ class Instructor:
         cur.close()
         conn.close()
 
+    def unenroll_student_in_course(self, id, course_id):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        unenroll_student = "DELETE FROM takes3(course_id, id, course_grade) WHERE id = %s AND WHERE course_id = %s"
+        cur.execute(unenroll_student, (id, course_id))
+
+        unenroll_student2 = "DELETE FROM submits3(id, assignment_id, file_path_submission, submission_grade) WHERE id = %s" \
+                            "AND WHERE assignment_id IN " \
+                            "SELECT assignment_id FROM assigns2 WHERE course_id = %s"
+        cur.execute(unenroll_student, (id, course_id))
+
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
     def enroll_ta_in_course(self, id, course_id):
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
@@ -96,6 +114,18 @@ class Instructor:
 
         enroll_ta = "INSERT INTO assists3(course_id, id) VALUES(%s, %s)"
         cur.execute(enroll_ta, (course_id, id))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+    def unenroll_ta_in_course(self, id, course_id):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        unenroll_ta = "DELETE FROM assists3(course_id, id) WHERE id = %s AND course_id = %s"
+        cur.execute(unenroll_ta, (id, course_id))
         conn.commit()
 
         cur.close()
