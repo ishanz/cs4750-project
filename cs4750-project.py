@@ -4,6 +4,7 @@ from login_utilities import check_login
 from models import User
 from functools import wraps
 from Instructor import Instructor
+from Admin import Admin
 
 # Begin Flask run
 
@@ -39,7 +40,14 @@ def hello_world():
 @login_required
 @requires_roles('admin')
 def admin_cp():
-    return render_template('admin_cp.html')
+    user = current_user
+    username = user.get_id()
+    admin = Admin(username)
+    user_list = admin.show_all_users()
+    professor = admin.show_professor('cid1')
+    admin.create_course('cid3', 3, 'intro to math', 'instr')
+    course_data = admin.show_courses()
+    return render_template('admin_cp.html', course_data=course_data)
 
 @app.route('/control/student')
 @login_required
