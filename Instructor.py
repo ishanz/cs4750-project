@@ -162,6 +162,7 @@ class Instructor:
         cur.close()
         conn.close()
 
+
     def grade_submission(self, id, assignment_id, file_path, submission_grade, course_id):
         ############## NEEDS TESTING!!!!!!!!!!!!!!!!!! FUCK ##############
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
@@ -195,6 +196,19 @@ class Instructor:
 
         cur.close()
         conn.close()
+
+    def remove_submission(self, id, assignment_id):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        delete_sub = "DELETE FROM submits3 (id, assignment_id, file_path_submission, submission_grade) WHERE id = %s AND assignment_id = %s"
+        cur.execute(delete_sub, (id, assignment_id))
+        conn.commit()
+        
+        cur.close()
+        conn.close()
+
 
 # grade submission (update course grade as well)
 
