@@ -93,6 +93,6 @@ def check_login(username, password):
 
     return authorized_login
 
-# create_user('mst3k', 'password', 'student', 'Student', 'Dude')
-# delete_user('instr')
+# create_user('stud10', 'password', 'student', 'Student', 'Nigga')
+# delete_user('stud10')
 # print check_login('instr', 'password')

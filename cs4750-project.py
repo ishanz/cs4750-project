@@ -45,7 +45,7 @@ def admin_cp():
     admin = Admin(username)
     user_list = admin.show_all_users()
     professor = admin.show_professor('cid1')
-    admin.create_course('cid3', 3, 'intro to math', 'instr')
+    admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
     course_data = admin.show_courses()
     return render_template('admin_cp.html', course_data=course_data)
 

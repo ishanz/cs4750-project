@@ -66,9 +66,28 @@ class Admin:
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
-        add_course = "INSERT INTO teaches2(course_id, credits, course_name, id) " \
+
+        # Add the course to teaches2
+        add_course_to_teaches2 = "INSERT INTO teaches2(course_id, credits, course_name, id) " \
                      "VALUES (%s, %s, %s, %s)"
-        cur.execute(add_course, (course_id, credits, course_name, id))
+        cur.execute(add_course_to_teaches2, (course_id, credits, course_name, id))
         conn.commit()
+
+        # Add course to assists2
+        add_course_to_assists2 = "INSERT INTO assists2(course_id, credits, course_name) VALUES (%s, %s, %s)"
+        cur.execute(add_course_to_assists2, (course_id, credits, course_name))
+        conn.commit()
+
+        # Add course to assigns1
+        add_course_to_assigns1 = "INSERT INTO assigns1(course_id, credits, course_name) VALUES (%s, %s, %s)"
+        cur.execute(add_course_to_assigns1, (course_id, credits, course_name))
+        conn.commit()
+
+        # Add course to takes2
+        add_course_to_takes2 = "INSERT INTO takes2(course_id, credits, course_name) VALUES (%s, %s, %s)"
+        cur.execute(add_course_to_takes2, (course_id, credits, course_name))
+        conn.commit()
+
         cur.close()
         conn.close()
+
