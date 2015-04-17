@@ -66,12 +66,9 @@ class Admin:
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
-        add_course = ("INSERT INTO teaches2 "
-                        " (course_id, credits, course_name, id) "
-                            "VALUES (%(cid)s, %(cred)s, %(cname)s, %(ide)s)")
-        data = {'cid':course_id, 'cred':credits, 'cname':course_name, 'ide':id}
-        cur.execute(add_course, data)
+        add_course = "INSERT INTO teaches2(course_id, credits, course_name, id) " \
+                     "VALUES (%s, %s, %s, %s)"
+        cur.execute(add_course, (course_id, credits, course_name, id))
+        conn.commit()
         cur.close()
         conn.close()
-
-
