@@ -117,6 +117,56 @@ class Instructor:
         cur.close()
         conn.close()
 
-# create resource, grade submission (update course grade as well)
+    def create_resource(self, course_id, resource_name, file_path):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
 
-# instructor = Instructor('instr')
+        create_res = "INSERT INTO resources(course_id, resource_name, file_path_resource) VALUES(%s, %s, %s)"
+        cur.execute(create_res, (course_id, resource_name, file_path))
+        conn.commit()
+
+        cur.execute("SELECT * FROM resources")
+        print cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+    def grade_submission(self, id, assignment_id, file_path, submission_grade, course_id):
+        ############## NEEDS TESTING!!!!!!!!!!!!!!!!!! FUCK ##############
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        # Update the row that the student has already inserted with the submission grade
+        update_grade = "UPDATE submits3" \
+                       "SET submission_grade = %s " \
+                       "WHERE id = %s and assignment_id = %s and file_path = %s"
+        cur.execute(update_grade, (submission_grade, id, assignment_id, file_path))
+        conn.commit()
+
+        # Update the course grade
+        get_student_grades = "SELECT submission_grade FROM submits1 NATURAL JOIN submits3 " \
+                             "WHERE course_id = %s AND id = %s;"
+        cur.execute(get_student_grades, (course_id, id))
+        student_grades = cur.fetchall() # [(num1,), (num2,), ...]
+        sum = 0
+        num_grades = len(student_grades)
+        average_grade = 0.0
+        for grade_tuple in student_grades:
+            grade = grade_tuple[0]
+            sum += grade
+        average_grade = sum/num_grades
+        update_course_grade = "UPDATE takes3" \
+                              "SET course_grade = %s" \
+                              "WHERE course_id = %s AND id = %s"
+        cur.execute(update_course_grade, (course_id, id))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+# grade submission (update course grade as well)
+
+instructor = Instructor('instr')
+instructor.create_resource('cid1', 'BOOK', 'C:/RealNiggaBook')
