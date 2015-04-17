@@ -77,5 +77,46 @@ class Instructor:
         conn.close()
         return submission_list
 
+    def enroll_student_in_course(self, id, course_id):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
 
+        enroll_student = "INSERT INTO takes3(course_id, id, course_grade) VALUES(%s, %s, %s)"
+        cur.execute(enroll_student, (course_id, id, 100))
+        conn.commit()
 
+        cur.close()
+        conn.close()
+
+    def enroll_ta_in_course(self, id, course_id):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        enroll_ta = "INSERT INTO assists3(course_id, id) VALUES(%s, %s)"
+        cur.execute(enroll_ta, (course_id, id))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+    def create_assignment(self, assignment_id, course_id, file_path):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+
+        create_ass = "INSERT INTO assigns2(assignment_id, course_id, file_path_assignment) VALUES(%s, %s, %s)"
+        cur.execute(create_ass, (assignment_id, course_id, file_path))
+        conn.commit()
+
+        create_ass_2 = "INSERT INTO submits1(assignment_id, course_id) VALUES(%s, %s)"
+        cur.execute(create_ass_2, (assignment_id, course_id))
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+# create resource, grade submission (update course grade as well)
+
+# instructor = Instructor('instr')
