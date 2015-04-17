@@ -43,11 +43,11 @@ def admin_cp():
     user = current_user
     username = user.get_id()
     admin = Admin(username)
-    user_list = admin.show_all_users()
-    professor = admin.show_professor('cid1')
-    admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
-    course_data = admin.show_courses()
-    return render_template('admin_cp.html', course_data=course_data)
+    # user_list = admin.show_all_users()
+    # professor = admin.show_professor('cid1')
+    # admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
+    # course_data = admin.show_courses()
+    return render_template('admin_cp.html')
 
 @app.route('/control/student')
 @login_required
@@ -68,13 +68,13 @@ def instructor_cp():
     user = current_user
     username = user.get_id()
     instructor = Instructor(username)
-    course_data = instructor.show_courses() # Can use this to show course data for instructor
+    # course_data = instructor.show_courses() # Can use this to show course data for instructor
     #student_list = instructor.show_students('cid1')
     #assignment_list = instructor.show_assignments('cid1')
     #ta_list = instructor.show_tas('cid1')
     #resource_list = instructor.show_resources('cid1')
-    submission_list = instructor.show_submissions('cid1')
-    return render_template('instructor_cp.html', user=user, course_data=course_data)
+    # submission_list = instructor.show_submissions('cid1')
+    return render_template('instructor_cp.html', user=user)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -114,3 +114,4 @@ def show_user_profile(username):
 
 if __name__ == '__main__':
     app.run(debug=True)
+

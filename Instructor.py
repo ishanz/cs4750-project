@@ -94,12 +94,12 @@ class Instructor:
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
 
-        unenroll_student = "DELETE FROM takes3(course_id, id, course_grade) WHERE id = %s AND WHERE course_id = %s"
+        unenroll_student = "DELETE FROM takes3 WHERE id = %s AND course_id = %s"
         cur.execute(unenroll_student, (id, course_id))
 
-        unenroll_student2 = "DELETE FROM submits3(id, assignment_id, file_path_submission, submission_grade) WHERE id = %s" \
-                            "AND WHERE assignment_id IN " \
-                            "SELECT assignment_id FROM assigns2 WHERE course_id = %s"
+        unenroll_student2 = "DELETE FROM submits3 WHERE id = %s" \
+                            "AND assignment_id IN " \
+                            "(SELECT assignment_id FROM assigns2 WHERE course_id = %s)"
         cur.execute(unenroll_student, (id, course_id))
 
         conn.commit()
@@ -124,7 +124,7 @@ class Instructor:
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
 
-        unenroll_ta = "DELETE FROM assists3(course_id, id) WHERE id = %s AND course_id = %s"
+        unenroll_ta = "DELETE FROM assists3 WHERE id = %s AND course_id = %s"
         cur.execute(unenroll_ta, (id, course_id))
         conn.commit()
 
@@ -156,9 +156,6 @@ class Instructor:
         cur.execute(create_res, (course_id, resource_name, file_path))
         conn.commit()
 
-        cur.execute("SELECT * FROM resources")
-        print cur.fetchall()
-
         cur.close()
         conn.close()
 
@@ -170,9 +167,9 @@ class Instructor:
         cur = conn.cursor()
 
         # Update the row that the student has already inserted with the submission grade
-        update_grade = "UPDATE submits3" \
+        update_grade = "UPDATE submits3 " \
                        "SET submission_grade = %s " \
-                       "WHERE id = %s and assignment_id = %s and file_path = %s"
+                       "WHERE id = %s and assignment_id = %s and file_path_submission = %s"
         cur.execute(update_grade, (submission_grade, id, assignment_id, file_path))
         conn.commit()
 
@@ -188,29 +185,63 @@ class Instructor:
             grade = grade_tuple[0]
             sum += grade
         average_grade = sum/num_grades
-        update_course_grade = "UPDATE takes3" \
-                              "SET course_grade = %s" \
+        update_course_grade = "UPDATE takes3 " \
+                              "SET course_grade = %s " \
                               "WHERE course_id = %s AND id = %s"
-        cur.execute(update_course_grade, (course_id, id))
+        cur.execute(update_course_grade, (average_grade, course_id, id))
         conn.commit()
 
         cur.close()
         conn.close()
 
-    def remove_submission(self, id, assignment_id):
+    def remove_submission(self, id, assignment_id, course_id):
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
 
-        delete_sub = "DELETE FROM submits3 (id, assignment_id, file_path_submission, submission_grade) WHERE id = %s AND assignment_id = %s"
+        delete_sub = "DELETE FROM submits3 WHERE id = %s AND assignment_id = %s"
         cur.execute(delete_sub, (id, assignment_id))
         conn.commit()
-        
+
+        # Update the course grade
+        get_student_grades = "SELECT submission_grade FROM submits1 NATURAL JOIN submits3 " \
+                             "WHERE course_id = %s AND id = %s;"
+        cur.execute(get_student_grades, (course_id, id))
+        student_grades = cur.fetchall() # [(num1,), (num2,), ...]
+        sum = 0
+        num_grades = len(student_grades)
+        average_grade = 0.0
+        for grade_tuple in student_grades:
+            grade = grade_tuple[0]
+            sum += grade
+        if num_grades > 0:
+            average_grade = sum/num_grades
+        else:
+            average_grade = 100
+        update_course_grade = "UPDATE takes3 " \
+                              "SET course_grade = %s " \
+                              "WHERE course_id = %s AND id = %s"
+        cur.execute(update_course_grade, (average_grade, course_id, id))
+        conn.commit()
+
         cur.close()
         conn.close()
 
 
 # grade submission (update course grade as well)
 
-instructor = Instructor('instr')
-instructor.create_resource('cid1', 'BOOK', 'C:/RealNiggaBook')
+instructor = Instructor('instr1')
+# instructor.enroll_student_in_course('stud1', 'cid1')
+# instructor.enroll_student_in_course('stud2', 'cid1')
+# instructor.enroll_student_in_course('stud3', 'cid1')
+# instructor.enroll_student_in_course('stud3', 'cid2')
+# instructor.enroll_ta_in_course('ta1', 'cid1')
+# instructor.enroll_ta_in_course('ta2', 'cid1')
+# instructor.enroll_ta_in_course('ta3', 'cid3')
+# instructor.enroll_ta_in_course('ta1', 'cid3')
+
+# instructor.create_assignment(1, 'cid1', 'C:/FilePath')
+# instructor.create_resource('cid1', 'res1', 'C:/FilePath')
+
+# instructor.remove_submission('stud1', 1, 'cid1')
+# instructor.unenroll_student_in_course('stud1', 'cid1')

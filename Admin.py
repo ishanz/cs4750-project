@@ -96,13 +96,11 @@ class Admin:
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
 
-        change_instructor = "UPDATE teaches2(course_id, credits, course_name, id) SET id = %s WHERE course_id = %s"
-        cur.exectue(change_instructor, (id, course_id))
+        change_instructor = "UPDATE teaches2 SET id = %s WHERE course_id = %s"
+        cur.execute(change_instructor, (id, course_id))
         conn.commit()
 
         cur.close()
         conn.close()
-
-
 
 

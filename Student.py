@@ -64,3 +64,6 @@ class Student:
         conn.commit()
         cur.close()
         conn.close()
+
+# student = Student('stud1')
+# student.submit_assignment(1, 'C:/FilePath')

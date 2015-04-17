@@ -93,6 +93,17 @@ def check_login(username, password):
 
     return authorized_login
 
-# create_user('stud10', 'password', 'student', 'Student', 'Nigga')
-# delete_user('stud10')
+# create_user('instr1', 'password', 'instructor', 'Instructor', 'One')
+# create_user('instr2', 'password', 'instructor', 'Instructor', 'Two')
+# create_user('instr3', 'password', 'instructor', 'Instructor', 'Three')
+# create_user('instr4', 'password', 'instructor', 'Instructor', 'Four')
+# create_user('instr5', 'password', 'instructor', 'Instructor', 'Five')
+# create_user('ta1', 'password', 'ta', 'TA', 'One')
+# create_user('ta2', 'password', 'ta', 'TA', 'Two')
+# create_user('ta3', 'password', 'ta', 'TA', 'Three')
+# create_user('stud1', 'password', 'student', 'Student', 'One')
+# create_user('stud2', 'password', 'student', 'Student', 'Two')
+# create_user('stud3', 'password', 'student', 'Student', 'Three')
+
+# delete_user('instr5')
 # print check_login('instr', 'password')
