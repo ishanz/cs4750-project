@@ -177,11 +177,6 @@ def logout():
     logout_user()
     return render_template('loggedout.html')
 
-# Variable rules example
-@app.route('/user/<username>')
-def show_user_profile(username):
-    return 'User %s' % username
-
 if __name__ == '__main__':
     app.run(debug=True)
 

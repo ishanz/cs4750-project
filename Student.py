@@ -64,4 +64,3 @@ class Student:
         conn.commit()
         cur.close()
         conn.close()
-
