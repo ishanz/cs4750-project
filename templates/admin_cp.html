@@ -46,35 +46,33 @@
         {% endfor %}
     </div>
 
-    <div class="page-header">
-        <h2>All Users</h2>
-    </div>
-
-    <div class="col-md-9">
-          <table class="table table-striped">
+    <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>All Users</h2></div>
+        <table class="table table-striped">
             <thead>
-              <tr>
+            <tr>
                 <th><h4>ID</h4></th>
                 <th><h4>First Name</h4></th>
                 <th><h4>Last Name</h4></th>
                 <th><h4>Account Type</h4></th>
-              </tr>
+            </tr>
             </thead>
             <tbody>
-                    {% for user in user_list %}
+            {% for user in user_list %}
 
-              <tr>
-                <td>{% print user[0] %}</td>
-                <td>{% print user[1] %}</td>
-                <td>{% print user[2] %}</td>
-                <td>{% print user[3] %}</td>
-              </tr>
-                      {% endfor %}
+                <tr>
+                    <td>{% print user[0] %}</td>
+                    <td>{% print user[1] %}</td>
+                    <td>{% print user[2] %}</td>
+                    <td>{% print user[3] %}</td>
+                </tr>
+            {% endfor %}
 
             </tbody>
-          </table>
-        </div>
-      </div>
+        </table>
+    </div>
+</div>
 </div>
 </body>
 </html>

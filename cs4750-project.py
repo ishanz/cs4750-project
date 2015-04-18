@@ -65,7 +65,11 @@ def student_cp():
 @login_required
 @requires_roles('ta')
 def ta_cp():
-    return render_template('ta_cp.html')
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+    course_data = ta.show_courses()
+    return render_template('ta_cp.html', user=user, course_data=course_data)
 
 @app.route('/control/instructor_cp')
 @login_required

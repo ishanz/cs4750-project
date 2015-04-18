@@ -11,7 +11,7 @@ class Student:
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
-        cur.execute("SELECT course_id, id, course_grade FROM takes3 "
+        cur.execute("SELECT course_id, course_name, id, course_grade FROM takes3 NATURAL JOIN takes2 "
                     "WHERE id ='" + self.username + "';")
         course_data = cur.fetchall()
         print course_data
