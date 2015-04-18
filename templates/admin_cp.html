@@ -2,21 +2,79 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Admin {{ user.get_name() }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-<div class="jumbotron">
-  <h1>Hello, Admin!</h1>
-  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-</div>
-Welcome to the admin control panel.  <br>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">CMS | Lite</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container" role="main">
+    <div class="jumbotron">
+        <h1>{{ user.get_name() }}</h1>
+        <h4>Welcome to the Admin Panel.</h4>
+    </div>
 
-<a href="/logout">Logout.</a><br>
-<a href="http://www.google.com">Go f*ck yourself.</a>
+
+    <div class="page-header">
+        <h2>All Classes</h2>
+    </div>
+
+    <div class="list-group">
+        {% for course in course_data %}
+            <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">{%  print course[2] %}</h4>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="page-header">
+        <h2>All Users</h2>
+    </div>
+
+    <div class="col-md-9">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th><h4>ID</h4></th>
+                <th><h4>First Name</h4></th>
+                <th><h4>Last Name</h4></th>
+                <th><h4>Account Type</h4></th>
+              </tr>
+            </thead>
+            <tbody>
+                    {% for user in user_list %}
+
+              <tr>
+                <td>{% print user[0] %}</td>
+                <td>{% print user[1] %}</td>
+                <td>{% print user[2] %}</td>
+                <td>{% print user[3] %}</td>
+              </tr>
+                      {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
 </div>
 </body>
 </html>
