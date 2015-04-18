@@ -67,7 +67,19 @@ def admin_add_user():
             return redirect(url_for('admin_cp'))
     return render_template('admin_add_user.html')
 
-@app.route('/control/admin/remove_user', methods=['GET', 'POST'])
+@app.route('/control/admin/remove_user_with_button/')
+@login_required
+@requires_roles('admin')
+def remove_user_with_button():
+    if request.method == 'GET':
+        username = request.args.get('id')
+        if username is not None:
+            delete_user(username)
+            return 'User ' + username + ' deleted.'
+    return 'Error in delete request.'
+
+
+@app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
 @login_required
 @requires_roles('admin')
 def admin_remove_user():

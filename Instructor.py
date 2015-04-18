@@ -238,22 +238,3 @@ class Instructor:
 
         cur.close()
         conn.close()
-
-
-# grade submission (update course grade as well)
-
-instructor = Instructor('instr1')
-# instructor.enroll_student_in_course('stud1', 'cid1')
-# instructor.enroll_student_in_course('stud2', 'cid1')
-# instructor.enroll_student_in_course('stud3', 'cid1')
-# instructor.enroll_student_in_course('stud3', 'cid2')
-# instructor.enroll_ta_in_course('ta1', 'cid1')
-# instructor.enroll_ta_in_course('ta2', 'cid1')
-# instructor.enroll_ta_in_course('ta3', 'cid3')
-# instructor.enroll_ta_in_course('ta1', 'cid3')
-
-# instructor.create_assignment(1, 'cid1', 'C:/FilePath')
-# instructor.create_resource('cid1', 'res1', 'C:/FilePath')
-
-# instructor.remove_submission('stud1', 1, 'cid1')
-# instructor.unenroll_student_in_course('stud1', 'cid1')
