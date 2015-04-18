@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add User</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<div class="container"><br/>
+    {% if  current_user.is_authenticated() %}
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h1>Add User</h1></div>
+            <br>
+            <div class="panel-body">
+                <form action="" method="post">
+                    <input type="text" class="form-control" style="width:30%" placeholder="Username" name="username" value="{{
+                            request.form.username }}"><br/>
+                    <input type="text" class="form-control" style="width:30%" placeholder="Password" name="password" value="{{
+                            request.form.password }}"><br/>
+                    <input type="text" class="form-control" style="width:30%" placeholder="Account" name="account" value="{{
+                            request.form.account }}"><br/>
+                    <input type="text" class="form-control" style="width:30%" placeholder="First Name" name="first_name" value="{{
+                            request.form.first_name }}"><br/>
+                    <input type="text" class="form-control" style="width:30%" placeholder="Last Name" name="last_name" value="{{
+                            request.form.last_name }}"><br/>
+
+                    <input class="btn btn-success" type="submit" value="Submit">
+                    <a href="/control/admin" class="btn btn-default">Cancel</a>
+                </form>
+            </div>
+        </div>
+        </div>
+    {% endif %}
+</body>
+</html>

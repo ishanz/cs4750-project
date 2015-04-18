@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, get_flashed_messages
 from flask.ext.login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
-from login_utilities import check_login
+from login_utilities import check_login, create_user, delete_user
 from models import User
 from functools import wraps
 from Instructor import Instructor
@@ -50,6 +50,31 @@ def admin_cp():
     # admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
     course_data = admin.show_courses()
     return render_template('admin_cp.html', user=user, course_data = course_data, user_list = user_list)
+
+@app.route('/control/admin/add_user', methods=['GET', 'POST'])
+@login_required
+@requires_roles('admin')
+def admin_add_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password'].encode('utf-8')
+        account = request.form['account']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        password.encode('utf-8')
+        create_user(username, password, account, first_name, last_name)
+        return redirect(url_for('admin_cp'))
+    return render_template('admin_add_user.html')
+
+@app.route('/control/admin/remove_user', methods=['GET', 'POST'])
+@login_required
+@requires_roles('admin')
+def admin_remove_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        delete_user(username)
+        return redirect(url_for('admin_cp'))
+    return render_template('admin_remove_user.html')
 
 @app.route('/control/student')
 @login_required
