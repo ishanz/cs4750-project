@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script language="JavaScript">
+
+    function deleteUser(id) {
+        var url = "/control/admin/remove_user_with_button/?id=" + id;
+        var request = null;
+        request = new XMLHttpRequest();
+        request.open("GET", url, false);
+        request.send(null);
+    }
+    </script>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -70,7 +82,7 @@
                     <td>{% print user[1] %}</td>
                     <td>{% print user[2] %}</td>
                     <td>{% print user[3] %}</td>
-                    <td><a href=""><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a></td>
+                    <td><a href="/control/admin" onclick="deleteUser('{{ user[0] }}');"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a></td>
                 </tr>
             {% endfor %}
 
