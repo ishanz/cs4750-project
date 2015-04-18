@@ -62,8 +62,9 @@ def admin_add_user():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         password.encode('utf-8')
-        create_user(username, password, account, first_name, last_name)
-        return redirect(url_for('admin_cp'))
+        if len(username) > 0:
+            create_user(username, password, account, first_name, last_name)
+            return redirect(url_for('admin_cp'))
     return render_template('admin_add_user.html')
 
 @app.route('/control/admin/remove_user', methods=['GET', 'POST'])
@@ -117,8 +118,20 @@ def instructor_cp():
 def modify_course():
     # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
     course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    student_list = instructor.show_students(course_id)
+    ta_list = instructor.show_tas(course_id)
+    assignment_list = instructor.show_assignments(course_id)
+    resource_list = instructor.show_resources(course_id)
+    submission_list = instructor.show_submissions(course_id)
+
     if course_id is not None:
-        return course_id
+        return render_template('instr_view_course.html', user=user, course_id=course_id, course_data=course_data,
+                               student_list=student_list, ta_list=ta_list, assignment_list=assignment_list,
+                               resource_list=resource_list, submission_list=submission_list)
     return 'Error: No query string.'
 
 
