@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Instructor {{ user.get_name() }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">CMS | Lite</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container" role="main">
+    <a href="/control/instructor_cp" class="btn btn-default">Back</a><br><br>
+    <div class="jumbotron">
+        <h1>{% print course_data[2] %}</h1>
+        <p>{{ course_id }}</p>
+    </div>
+
+    <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Students</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>Student ID</h4></th>
+                <th><h4>First Name</h4></th>
+                <th><h4>Last Name</h4></th>
+                <th><h4>Course Grade</h4></th>
+                <th><h4>Unenroll Student</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in student_list %}
+                <tr>
+                    <td>{% print student[0] %}</td>
+                    <td>{% print student[1] %}</td>
+                    <td>{% print student[2] %}</td>
+                    <td>{% print student[3] %}</td>
+                    <td><a href="/control/instructor_cp/unenroll_student/?cid={{ course_id }}&id={{ student[0] }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>TAs</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>TA ID</h4></th>
+                <th><h4>First Name</h4></th>
+                <th><h4>Last Name</h4></th>
+                <th><h4>Unenroll TA</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ta in ta_list %}
+                <tr>
+                    <td>{% print ta[0] %}</td>
+                    <td>{% print ta[1] %}</td>
+                    <td>{% print ta[2] %}</td>
+                    <td><a href="/control/instructor_cp/unenroll_ta/?cid={{ course_id }}&id={{ ta[0] }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Assignments</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>Assignment ID</h4></th>
+                <th><h4>File Path</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for assignment in assignment_list %}
+                <tr>
+                    <td>{% print assignment[0] %}</td>
+                    <td>{% print assignment[1] %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Resources</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>Resource Name</h4></th>
+                <th><h4>File Path</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for resource in resource_list %}
+                <tr>
+                    <td>{% print resource[0] %}</td>
+                    <td>{% print resource[1] %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Submissions</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>Student ID</h4></th>
+                <th><h4>First Name</h4></th>
+                <th><h4>Last Name</h4></th>
+                <th><h4>Assignments</h4></th>
+                <th><h4>File Paths</h4></th>
+                <th><h4>Submission Grades</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sub in submission_list %}
+                <tr>
+                    <td>{% print sub[0] %}</td>
+                    <td>{% print sub[1] %}</td>
+                    <td>{% print sub[2] %}</td>
+                    <td>{% print sub[3] %}</td>
+                    <td>{% print sub[4] %}</td>
+                    <td>{% print sub[5] %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/control/instructor_cp" class="btn btn-default">Back</a><br><br>
+
+</div>
+</body>
+</html>

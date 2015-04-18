@@ -79,15 +79,15 @@ def remove_user_with_button():
     return 'Error in delete request.'
 
 
-@app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
-@login_required
-@requires_roles('admin')
-def admin_remove_user():
-    if request.method == 'POST':
-        username = request.form['username']
-        delete_user(username)
-        return redirect(url_for('admin_cp'))
-    return render_template('admin_remove_user.html')
+# @app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
+# @login_required
+# @requires_roles('admin')
+# def admin_remove_user():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         delete_user(username)
+#         return redirect(url_for('admin_cp'))
+#     return render_template('admin_remove_user.html')
 
 @app.route('/control/student')
 @login_required
@@ -146,6 +146,99 @@ def modify_course():
                                resource_list=resource_list, submission_list=submission_list)
     return 'Error: No query string.'
 
+@app.route('/control/instructor_cp/enroll_student/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('instructor')
+def enroll_student():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    student_list = instructor.show_students(course_id)
+    student_ids = []
+    for student in student_list:
+        student_ids.append(student[0])
+
+    if request.method == 'POST':
+        studID = request.form['studID']
+        if studID not in student_ids:
+            instructor.enroll_student_in_course(studID, course_id)
+            return redirect(url_for('instructor_cp'))
+        else:
+            return redirect(url_for('instructor_cp'))
+    return render_template('instr_enroll_student.html')
+
+@app.route('/control/instructor_cp/unenroll_student/')
+@login_required
+@requires_roles('instructor')
+def unenroll_student():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    student_id = request.args.get('id')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    student_list = instructor.show_students(course_id)
+    student_ids = []
+    for student in student_list:
+        student_ids.append(student[0])
+
+    if student_id in student_ids:
+        instructor.unenroll_student_in_course(student_id, course_id)
+        return redirect(url_for('instructor_cp'))
+    else:
+        return redirect(url_for('instructor_cp'))
+    return render_template('instructor_cp.html', user=user, course_data = course_data)
+
+@app.route('/control/instructor_cp/enroll_ta/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('instructor')
+def enroll_ta():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    ta_list = instructor.show_tas(course_id)
+    ta_ids = []
+    for ta in ta_list:
+        ta_ids.append(ta[0])
+
+    if request.method == 'POST':
+        taID = request.form['taID']
+        if taID not in ta_ids:
+            instructor.enroll_ta_in_course(taID, course_id)
+            return redirect(url_for('instructor_cp'))
+        else:
+            return redirect(url_for('instructor_cp'))
+    return render_template('instr_enroll_ta.html')
+
+@app.route('/control/instructor_cp/unenroll_ta/')
+@login_required
+@requires_roles('instructor')
+def unenroll_ta():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    ta_id = request.args.get('id')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    ta_list = instructor.show_tas(course_id)
+    ta_ids = []
+    for ta in ta_list:
+        ta_ids.append(ta[0])
+
+    if ta_id in ta_ids:
+        instructor.unenroll_ta_in_course(ta_id, course_id)
+        return redirect(url_for('instructor_cp'))
+    else:
+        return redirect(url_for('instructor_cp'))
+    return render_template('instructor_cp.html', user=user, course_data = course_data)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
