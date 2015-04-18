@@ -39,8 +39,7 @@
 
     <div class="list-group">
         {% for course in course_data %}
-
-            <a href="#" class="list-group-item">
+            <a href="/control/instructor_cp/modify_course/?cid={% print course[0] %}" class="list-group-item">
                 <h4 class="list-group-item-heading">{%  print course[2] %}</h4>
             </a>
         {% endfor %}

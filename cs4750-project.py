@@ -111,6 +111,16 @@ def instructor_cp():
     # submission_list = instructor.show_submissions('cid1')
     return render_template('instructor_cp.html', user=user, course_data = course_data)
 
+@app.route('/control/instructor_cp/modify_course/')
+@login_required
+@requires_roles('instructor')
+def modify_course():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    if course_id is not None:
+        return course_id
+    return 'Error: No query string.'
+
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
