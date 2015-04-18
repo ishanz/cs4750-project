@@ -79,15 +79,15 @@ def remove_user_with_button():
     return 'Error in delete request.'
 
 
-@app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
-@login_required
-@requires_roles('admin')
-def admin_remove_user():
-    if request.method == 'POST':
-        username = request.form['username']
-        delete_user(username)
-        return redirect(url_for('admin_cp'))
-    return render_template('admin_remove_user.html')
+# @app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
+# @login_required
+# @requires_roles('admin')
+# def admin_remove_user():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         delete_user(username)
+#         return redirect(url_for('admin_cp'))
+#     return render_template('admin_remove_user.html')
 
 @app.route('/control/student')
 @login_required
