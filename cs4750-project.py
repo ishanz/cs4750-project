@@ -324,6 +324,31 @@ def add_resource():
             return redirect(url_for('instructor_cp'))
     return render_template('instr_add_resource.html')
 
+@app.route('/control/ta_cp/add_resource/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('ta')
+def ta_add_resource():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+    course_data = ta.get_course_data(course_id)
+    res_list = ta.show_resources(course_id)
+    res_ids = []
+    for res in res_list:
+        res_ids.append(res[0])
+
+    if request.method == 'POST':
+        resName = request.form['resName']
+        filepath = request.form['filepath']
+        if resName not in res_ids:
+            ta.create_resource(course_id,resName,filepath)
+            return redirect(url_for('ta_cp'))
+        else:
+            return redirect(url_for('ta_cp'))
+    return render_template('ta_add_resource.html')
+
 @app.route('/control/instructor_cp/edit_grade/', methods=['GET', 'POST'])
 @login_required
 @requires_roles('instructor')
@@ -345,6 +370,28 @@ def edit_grade():
         else:
             return redirect(url_for('instructor_cp'))
     return render_template('instr_edit_grade.html')
+
+@app.route('/control/ta_cp/edit_grade/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('ta')
+def ta_edit_grade():
+    # URL requested will look like /control/ta_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    id = request.args.get('id')
+    assign_id = request.args.get('assign_id')
+    file_path = request.args.get('file_path')
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+
+    if request.method == 'POST':
+        grade = request.form['grade']
+        if grade > 0:
+            ta.grade_submission(id,assign_id,file_path,grade,course_id)
+            return redirect(url_for('ta_cp'))
+        else:
+            return redirect(url_for('ta_cp'))
+    return render_template('ta_edit_grade.html')
 
 @app.route('/control/instructor_cp/remove_submission/')
 @login_required
@@ -377,8 +424,53 @@ def remove_submission():
         return redirect(url_for('instructor_cp'))
     return render_template('instructor_cp.html', user=user, course_data = course_data)
 
+@app.route('/control/ta_cp/remove_submission/')
+@login_required
+@requires_roles('ta')
+def ta_remove_submission():
+    # URL requested will look like /control/ta_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    id = request.args.get('id')
+    assign_id = request.args.get('assign_id')
+    assign_id = int(assign_id)
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+    course_data = ta.get_course_data(course_id)
+    sub_list = ta.show_submissions(course_id)
+    sub_ids = []
+    for sub in sub_list:
+        sub_ids.append(sub[3])
+
+    student_list = ta.show_students(course_id)
+    student_ids = []
+    for student in student_list:
+        student_ids.append(student[0])
+
+    if sub_ids.__contains__(assign_id) and student_ids.__contains__(id):
+        print "HELP", assign_id, id
+        ta.remove_submission(id,assign_id,course_id)
+        return redirect(url_for('ta_cp'))
+    else:
+        return redirect(url_for('ta_cp'))
+    return render_template('ta_cp.html', user=user, course_data = course_data)
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    # Ensure the current user's not authenticated and redirect appropriately if so
+    if current_user is not None and current_user.is_authenticated():
+        role = current_user.get_role()
+        if role == 'admin':
+            return redirect(url_for('admin_cp'))
+        elif role == 'instructor':
+            return redirect(url_for('instructor_cp'))
+        elif role == 'ta':
+            return redirect(url_for('ta_cp'))
+        elif role == 'student':
+            return redirect(url_for('student_cp'))
+        else:
+            return "Everybody's special."
+
     # Validate credentials
     if request.method == 'POST':
         username = request.form['username']
