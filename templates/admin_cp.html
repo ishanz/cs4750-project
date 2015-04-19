@@ -45,17 +45,28 @@
         <h4>Welcome to the Admin Panel.</h4>
     </div>
 
+    <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>All Classes</h2></div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><h4>Course ID</h4></th>
+                <th><h4>Course Name</h4></th>
+                <th><h4>Credits</h4></th>
 
-    <div class="page-header">
-        <h2>All Classes</h2>
-    </div>
-
-    <div class="list-group">
-        {% for course in course_data %}
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">{%  print course[2] %}</h4>
-            </a>
-        {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for course in course_data %}
+                <tr>
+                    <td>{% print course[0] %}</td>
+                    <td>{% print course[2] %}</td>
+                    <td>{% print course[1] %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <div class="panel panel-primary">
