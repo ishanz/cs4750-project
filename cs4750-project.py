@@ -46,10 +46,23 @@ def admin_cp():
     username = user.get_id()
     admin = Admin(username)
     user_list = admin.show_all_users()
-    # professor = admin.show_professor('cid1')
-    # admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
     course_data = admin.show_courses()
     return render_template('admin_cp.html', user=user, course_data = course_data, user_list = user_list)
+
+@app.route('/control/admin/export_users')
+@login_required
+@requires_roles('admin')
+def export_data():
+    username = current_user.get_id()
+    admin = Admin(username)
+    user_list = admin.show_all_users()
+    data = ''
+    for tuple in user_list:
+        data += tuple[0] + "," # id
+        data += tuple[1] + "," # first name
+        data += tuple[2] + "," # last name
+        data += tuple[3] + "<br>" # account type
+    return data
 
 @app.route('/control/admin/add_user', methods=['GET', 'POST'])
 @login_required
