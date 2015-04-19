@@ -146,6 +146,27 @@ def modify_course():
                                resource_list=resource_list, submission_list=submission_list)
     return 'Error: No query string.'
 
+@app.route('/control/ta_cp/modify_course/')
+@login_required
+@requires_roles('ta')
+def ta_modify_course():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+    course_data = ta.get_course_data(course_id)
+    student_list = ta.show_students(course_id)
+    assignment_list = ta.show_assignments(course_id)
+    resource_list = ta.show_resources(course_id)
+    submission_list = ta.show_submissions(course_id)
+
+    if course_id is not None:
+        return render_template('ta_view_course.html', user=user, course_id=course_id, course_data=course_data,
+                               student_list=student_list, assignment_list=assignment_list,
+                               resource_list=resource_list, submission_list=submission_list)
+    return 'Error: No query string.'
+
 @app.route('/control/instructor_cp/enroll_student/', methods=['GET', 'POST'])
 @login_required
 @requires_roles('instructor')

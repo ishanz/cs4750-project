@@ -33,22 +33,22 @@
         <p>Welcome to the Teaching Assistant Panel.</p>
     </div>
 
-    <div class="panel panel-primary">
+        <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h2>My Classes</h2></div>
         <table class="table table-striped">
             <thead>
             <tr>
                 <th><h4>Course ID</h4></th>
-                <th><h4>Class</h4></th>
+                <th><h4>Course Name</h4></th>
                 <th><h4>Credits</h4></th>
             </tr>
             </thead>
             <tbody>
             {% for course in course_data %}
                 <tr>
-                    <td><a href="">{% print course[0] %}</a></td>
-                    <td><a href="">{% print course[2] %}</a></td>
+                    <td><a href="/control/ta_cp/modify_course/?cid={% print course[0] %}">{% print course[0] %}</a></td>
+                    <td><a href="/control/ta_cp/modify_course/?cid={% print course[0] %}">{% print course[2] %}</a></td>
                     <td>{% print course[1] %}</td>
                 </tr>
             {% endfor %}

@@ -124,4 +124,15 @@ class TA:
         cur.close()
         conn.close()
 
+     def get_course_data(self, cid):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+        cur.execute("SELECT course_id, credits, course_name FROM teaches2 "
+                    "WHERE course_id ='" + cid + "';")
+        course_data = cur.fetchall()
+        course_data = course_data[0]
+        cur.close()
+        conn.close()
+        return course_data
 
