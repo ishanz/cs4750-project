@@ -112,6 +112,53 @@ def student_cp():
     course_data = student.show_courses()
     return render_template('student_cp.html', user=user, course_data=course_data)
 
+@app.route('/control/student/view_course/')
+@login_required
+@requires_roles('student')
+def view_course():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    student = Student(username)
+    course_data = student.get_course_data(course_id)
+    assignment_list = student.show_assignments(course_id)
+    resource_list = student.show_resources(course_id)
+    submission_list = student.show_submissions(course_id)
+
+    if course_id is not None:
+        return render_template('student_view_course.html', user=user, course_data=course_data,course_id=course_id, assignment_list=assignment_list,
+                               resource_list=resource_list, submission_list=submission_list)
+    return 'Error: No query string.'
+
+@app.route('/control/student/submit_assignment/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('student')
+def submit_assignment():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    student = Student(username)
+    course_data = student.get_course_data(course_id)
+    assign_list = student.show_assignments(course_id)
+    assign_ids = []
+    for assign in assign_list:
+        assign_ids.append(assign[0])
+
+    if request.method == 'POST':
+        assignID = request.form['assignID']
+        filepath = request.form['filepath']
+        assignID = int(assignID)
+        
+        if assignID in assign_ids:
+            print "HELLO"
+            student.submit_assignment(assignID,filepath)
+            return redirect(url_for('student_cp'))
+        else:
+            return redirect(url_for('student_cp'))
+    return render_template('student_submit_assignment.html')
+
 @app.route('/control/ta')
 @login_required
 @requires_roles('ta')

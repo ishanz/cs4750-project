@@ -7,6 +7,19 @@ class Student:
     def __init__(self, username):
         self.username = username
 
+    def get_course_data(self, cid):
+        conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
+                                     "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
+        cur = conn.cursor()
+        cur.execute("SELECT course_id, course_name, id, course_grade FROM takes3 NATURAL JOIN takes2 "
+                    "WHERE course_id ='" + cid + "';")
+        course_data = cur.fetchall()
+        course_data = course_data[0]
+        print course_data
+        cur.close()
+        conn.close()
+        return course_data
+
     def show_courses(self):
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
@@ -47,7 +60,7 @@ class Student:
         cur = conn.cursor()
         cur.execute("SELECT assignment_id, file_path_submission, submission_grade "
                     "FROM submits1 NATURAL JOIN submits2 NATURAL JOIN submits3 WHERE course_id= '" + cid +
-                    " AND id = " + self.username + "';")
+                    "' AND id = '" + self.username + "';")
         submission_list = cur.fetchall()
         print submission_list
         cur.close()
