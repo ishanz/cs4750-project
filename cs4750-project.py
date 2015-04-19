@@ -240,6 +240,109 @@ def unenroll_ta():
         return redirect(url_for('instructor_cp'))
     return render_template('instructor_cp.html', user=user, course_data = course_data)
 
+@app.route('/control/instructor_cp/add_assignment/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('instructor')
+def add_assignment():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    assign_list = instructor.show_assignments(course_id)
+    assign_ids = []
+    for assign in assign_list:
+        assign_ids.append(assign[0])
+
+    if request.method == 'POST':
+        assignID = request.form['assignID']
+        filepath = request.form['filepath']
+        if assignID not in assign_ids:
+            instructor.create_assignment(assignID,course_id,filepath)
+            return redirect(url_for('instructor_cp'))
+        else:
+            return redirect(url_for('instructor_cp'))
+    return render_template('instr_add_assignment.html')
+
+@app.route('/control/instructor_cp/add_resource/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('instructor')
+def add_resource():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    res_list = instructor.show_resources(course_id)
+    res_ids = []
+    for res in res_list:
+        res_ids.append(res[0])
+
+    if request.method == 'POST':
+        resName = request.form['resName']
+        filepath = request.form['filepath']
+        if resName not in res_ids:
+            instructor.create_resource(course_id,resName,filepath)
+            return redirect(url_for('instructor_cp'))
+        else:
+            return redirect(url_for('instructor_cp'))
+    return render_template('instr_add_resource.html')
+
+@app.route('/control/instructor_cp/edit_grade/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('instructor')
+def edit_grade():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    id = request.args.get('id')
+    assign_id = request.args.get('assign_id')
+    file_path = request.args.get('file_path')
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+
+    if request.method == 'POST':
+        grade = request.form['grade']
+        if grade > 0:
+            instructor.grade_submission(id,assign_id,file_path,grade,course_id)
+            return redirect(url_for('instructor_cp'))
+        else:
+            return redirect(url_for('instructor_cp'))
+    return render_template('instr_edit_grade.html')
+
+@app.route('/control/instructor_cp/remove_submission/')
+@login_required
+@requires_roles('instructor')
+def remove_submission():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    id = request.args.get('id')
+    assign_id = request.args.get('assign_id')
+    assign_id = int(assign_id)
+    user = current_user
+    username = user.get_id()
+    instructor = Instructor(username)
+    course_data = instructor.get_course_data(course_id)
+    sub_list = instructor.show_submissions(course_id)
+    sub_ids = []
+    for sub in sub_list:
+        sub_ids.append(sub[3])
+
+    student_list = instructor.show_students(course_id)
+    student_ids = []
+    for student in student_list:
+        student_ids.append(student[0])
+
+    if sub_ids.__contains__(assign_id) and student_ids.__contains__(id):
+        print "HELP", assign_id, id
+        instructor.remove_submission(id,assign_id,course_id)
+        return redirect(url_for('instructor_cp'))
+    else:
+        return redirect(url_for('instructor_cp'))
+    return render_template('instructor_cp.html', user=user, course_data = course_data)
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     # Validate credentials
