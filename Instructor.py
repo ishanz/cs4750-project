@@ -173,7 +173,6 @@ class Instructor:
 
 
     def grade_submission(self, id, assignment_id, file_path, submission_grade, course_id):
-        ############## NEEDS TESTING!!!!!!!!!!!!!!!!!! FUCK ##############
         conn = psycopg2.connect("dbname='ClassManagementSystem' user='username' "
                                      "host='cs4750.cq8mqtnic7zz.us-west-2.rds.amazonaws.com' password='password'")
         cur = conn.cursor()
