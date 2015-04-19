@@ -46,10 +46,23 @@ def admin_cp():
     username = user.get_id()
     admin = Admin(username)
     user_list = admin.show_all_users()
-    # professor = admin.show_professor('cid1')
-    # admin.create_course('cid45', 3, 'Intermediate THOTS', 'instr')
     course_data = admin.show_courses()
     return render_template('admin_cp.html', user=user, course_data = course_data, user_list = user_list)
+
+@app.route('/control/admin/export_users')
+@login_required
+@requires_roles('admin')
+def export_data():
+    username = current_user.get_id()
+    admin = Admin(username)
+    user_list = admin.show_all_users()
+    data = ''
+    for tuple in user_list:
+        data += tuple[0] + "," # id
+        data += tuple[1] + "," # first name
+        data += tuple[2] + "," # last name
+        data += tuple[3] + "<br>" # account type
+    return data
 
 @app.route('/control/admin/add_user', methods=['GET', 'POST'])
 @login_required
@@ -143,6 +156,27 @@ def modify_course():
     if course_id is not None:
         return render_template('instr_view_course.html', user=user, course_id=course_id, course_data=course_data,
                                student_list=student_list, ta_list=ta_list, assignment_list=assignment_list,
+                               resource_list=resource_list, submission_list=submission_list)
+    return 'Error: No query string.'
+
+@app.route('/control/ta_cp/modify_course/')
+@login_required
+@requires_roles('ta')
+def ta_modify_course():
+    # URL requested will look like /control/instructor_cp/modify_course/?cid=some-value
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    ta = TA(username)
+    course_data = ta.get_course_data(course_id)
+    student_list = ta.show_students(course_id)
+    assignment_list = ta.show_assignments(course_id)
+    resource_list = ta.show_resources(course_id)
+    submission_list = ta.show_submissions(course_id)
+
+    if course_id is not None:
+        return render_template('ta_view_course.html', user=user, course_id=course_id, course_data=course_data,
+                               student_list=student_list, assignment_list=assignment_list,
                                resource_list=resource_list, submission_list=submission_list)
     return 'Error: No query string.'
 
