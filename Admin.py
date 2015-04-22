@@ -11,7 +11,7 @@ class Admin:
         cur = conn.cursor()
         cur.execute("SELECT course_id, credits, course_name FROM teaches2;")
         course_data = cur.fetchall()
-        print course_data
+        #print course_data
         cur.close()
         conn.close()
         return course_data
@@ -22,7 +22,7 @@ class Admin:
         cur = conn.cursor()
         cur.execute("SELECT id, first_name, last_name, account_type FROM users;")
         user_list = cur.fetchall()
-        print user_list
+        #print user_list
         cur.close()
         conn.close()
         return user_list
@@ -34,7 +34,7 @@ class Admin:
         cur.execute("SELECT id, first_name, last_name, course_grade FROM takes1 NATURAL JOIN takes3 "
                     "WHERE course_id ='" + cid + "';")
         student_list = cur.fetchall()
-        print student_list
+        #print student_list
         cur.close()
         conn.close()
         return student_list
@@ -46,7 +46,7 @@ class Admin:
         cur.execute("SELECT id, first_name, last_name FROM teaches1 NATURAL JOIN teaches2 "
                     "WHERE course_id ='" + cid + "';")
         professor = cur.fetchall()
-        print professor
+        #print professor
         cur.close()
         conn.close()
         return professor
@@ -57,7 +57,7 @@ class Admin:
         cur = conn.cursor()
         cur.execute("SELECT id, first_name,last_name FROM assists1 NATURAL JOIN assists3 WHERE course_id= '" + cid + "';")
         ta_list = cur.fetchall()
-        print ta_list
+        #print ta_list
         cur.close()
         conn.close()
         return ta_list

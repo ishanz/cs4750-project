@@ -34,8 +34,8 @@ def create_user(username, password, account_type, first_name, last_name):
     conn.commit()
 
     # Check the result
-    cur.execute("SELECT * FROM users")
-    print cur.fetchall()
+    # cur.execute("SELECT * FROM users")
+    # print cur.fetchall()
 
     # Close the connection
     cur.close()
@@ -47,16 +47,16 @@ def delete_user(username):
     cur = conn.cursor()
 
     # Print pre-delete
-    cur.execute("SELECT * FROM users")
-    print cur.fetchall()
+    # cur.execute("SELECT * FROM users")
+    # print cur.fetchall()
 
     # Delete the user
     cur.execute("DELETE FROM users WHERE id = '" + username + "'")
     conn.commit()
 
     # Print post-delete
-    cur.execute("SELECT * FROM users")
-    print cur.fetchall()
+    # cur.execute("SELECT * FROM users")
+    # print cur.fetchall()
 
     cur.close()
     conn.close()

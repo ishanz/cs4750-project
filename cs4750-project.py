@@ -172,7 +172,6 @@ def submit_assignment():
         assignID = int(assignID)
         
         if assignID in assign_ids:
-            print "HELLO"
             student.submit_assignment(assignID,filepath)
             return redirect(url_for('student_cp'))
         else:
@@ -504,7 +503,6 @@ def remove_submission():
         student_ids.append(student[0])
 
     if sub_ids.__contains__(assign_id) and student_ids.__contains__(id):
-        print "HELP", assign_id, id
         instructor.remove_submission(id,assign_id,course_id)
         return redirect(url_for('instructor_cp'))
     else:
@@ -535,7 +533,6 @@ def ta_remove_submission():
         student_ids.append(student[0])
 
     if sub_ids.__contains__(assign_id) and student_ids.__contains__(id):
-        print "HELP", assign_id, id
         ta.remove_submission(id,assign_id,course_id)
         return redirect(url_for('ta_cp'))
     else:
