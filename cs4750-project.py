@@ -255,6 +255,11 @@ def enroll_student():
     course_id = request.args.get('cid')
     user = current_user
     username = user.get_id()
+
+    user2 = current_user
+    username2 = user2.get_id()
+    admin = Admin(username2)
+
     instructor = Instructor(username)
     course_data = instructor.get_course_data(course_id)
     student_list = instructor.show_students(course_id)
@@ -262,9 +267,14 @@ def enroll_student():
     for student in student_list:
         student_ids.append(student[0])
 
+    user_list = admin.show_all_users()
+    user_ids = []
+    for use in user_list:
+        user_ids.append(use[0])
+
     if request.method == 'POST':
         studID = request.form['studID']
-        if studID not in student_ids:
+        if studID not in student_ids and len(studID) < 7 and studID in user_ids:
             instructor.enroll_student_in_course(studID, course_id)
             return redirect(url_for('instructor_cp'))
         else:
@@ -303,15 +313,25 @@ def enroll_ta():
     user = current_user
     username = user.get_id()
     instructor = Instructor(username)
+
+    user2 = current_user
+    username2 = user2.get_id()
+    admin = Admin(username2)
+
     course_data = instructor.get_course_data(course_id)
     ta_list = instructor.show_tas(course_id)
     ta_ids = []
     for ta in ta_list:
         ta_ids.append(ta[0])
 
+    user_list = admin.show_all_users()
+    user_ids = []
+    for use in user_list:
+        user_ids.append(use[0])
+
     if request.method == 'POST':
         taID = request.form['taID']
-        if taID not in ta_ids:
+        if taID not in ta_ids and len(taID) < 7 and taID in user_ids:
             instructor.enroll_ta_in_course(taID, course_id)
             return redirect(url_for('instructor_cp'))
         else:
