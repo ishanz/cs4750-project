@@ -80,6 +80,33 @@ def admin_add_user():
             return redirect(url_for('admin_cp'))
     return render_template('admin_add_user.html')
 
+@app.route('/control/admin/add_course', methods=['GET', 'POST'])
+@login_required
+@requires_roles('admin')
+def admin_add_course():
+    user = current_user
+    username = user.get_id()
+    admin = Admin(username)
+    user_list = admin.show_all_users()
+    user_ids = []
+    for user_id in user_list:
+        user_ids.append(user_id[0])
+
+    course_list = admin.show_courses()
+    course_ids = []
+    for course in course_list:
+        course_ids.append(course[0])
+
+    if request.method == 'POST':
+        course_id = request.form['course_id']
+        credits = request.form['credits']
+        course_name = request.form['course_name']
+        id = request.form['id']
+        if id in user_ids and course_id not in course_ids:
+            admin.create_course(course_id,credits,course_name,id)
+            return redirect(url_for('admin_cp'))
+    return render_template('admin_add_course.html')
+
 @app.route('/control/admin/remove_user_with_button/')
 @login_required
 @requires_roles('admin')
