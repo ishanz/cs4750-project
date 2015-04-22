@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Login</title>
+<head>
+    <title>Welcome to CMS Lite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-    {% if not current_user.is_authenticated() %}
-      <h1>Please login</h1>
-      <br>
-      <form action="" method="post">
-        <input type="text" placeholder="Username" name="username" value="{{
-          request.form.username }}">
-         <input type="password" placeholder="Password" name="password" value="{{
-          request.form.password }}">
-        <input class="btn btn-default" type="submit" value="Login">
-      </form>
+</head>
+<body>
+<div class="container"><br><br>
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h2>Please log in</h2>
+            </div>
+            <div class="panel-body">
+                {% if not current_user.is_authenticated() %}
+                    <form action="" method="post" class="form-signin">
+                        <input class="form-control" type="text" placeholder="Username" name="username" value="{{
+                                request.form.username }}" required><br>
+                        <input class="form-control" type="password" placeholder="Password" name="password" value="{{
+                                request.form.password }}" required>
+                        <br>
+                        <input class="btn btn-primary" type="submit" value="Login">
+                    </form>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    {% endif %}
-  </body>
+</div>
+</body>
 </html>

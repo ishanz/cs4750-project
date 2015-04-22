@@ -12,7 +12,7 @@ class TA:
         cur.execute("SELECT course_id, credits, course_name FROM assists2 natural join assists3 "
                     "WHERE id ='" + self.username + "';")
         course_data = cur.fetchall()
-        print course_data
+        #print course_data
         cur.close()
         conn.close()
         return course_data
@@ -24,7 +24,7 @@ class TA:
         cur.execute("SELECT id, first_name, last_name, course_grade FROM takes1 NATURAL JOIN takes3 "
                     "WHERE course_id ='" + cid + "';")
         student_list = cur.fetchall()
-        print student_list
+        #print student_list
         cur.close()
         conn.close()
         return student_list
@@ -35,7 +35,7 @@ class TA:
         cur = conn.cursor()
         cur.execute("SELECT assignment_id, file_path_assignment FROM assigns2 WHERE course_id= '" + cid + "';")
         assignment_list = cur.fetchall()
-        print assignment_list
+        #print assignment_list
         cur.close()
         conn.close()
         return assignment_list
@@ -46,7 +46,7 @@ class TA:
         cur = conn.cursor()
         cur.execute("SELECT resource_name, file_path_resource FROM resources WHERE course_id= '" + cid + "';")
         resource_list = cur.fetchall()
-        print resource_list
+        #print resource_list
         cur.close()
         conn.close()
         return resource_list
@@ -58,7 +58,7 @@ class TA:
         cur.execute("SELECT id, first_name,last_name, assignment_id, file_path_submission, submission_grade "
                     "FROM submits1 NATURAL JOIN submits2 NATURAL JOIN submits3 WHERE course_id= '" + cid + "';")
         submission_list = cur.fetchall()
-        print submission_list
+        #print submission_list
         cur.close()
         conn.close()
         return submission_list
@@ -139,7 +139,7 @@ class TA:
         conn.commit()
 
         cur.execute("SELECT * FROM resources")
-        print cur.fetchall()
+        #print cur.fetchall()
 
         cur.close()
         conn.close()

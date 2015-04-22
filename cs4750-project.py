@@ -91,6 +91,26 @@ def remove_user_with_button():
             return 'User ' + username + ' deleted.'
     return 'Error in delete request.'
 
+@app.route('/control/admin/modify_instructor/', methods=['GET', 'POST'])
+@login_required
+@requires_roles('admin')
+def admin_modify_instructor():
+    course_id = request.args.get('cid')
+    user = current_user
+    username = user.get_id()
+    admin = Admin(username)
+    user_list = admin.show_all_users()
+    user_ids = []
+    for user_id in user_list:
+        user_ids.append(user_id[0])
+
+    if request.method == 'POST':
+        id = request.form['id']
+        if len(id) > 0 and id in user_ids:
+            admin.mod_instructor(id, course_id)
+            return redirect(url_for('admin_cp'))
+    return render_template('admin_modify_instructor.html', user=user, course_id=course_id)
+
 
 # @app.route('/control/admin/remove_user/', methods=['GET', 'POST'])
 # @login_required

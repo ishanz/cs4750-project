@@ -15,7 +15,7 @@ class Student:
                     "WHERE course_id ='" + cid + "';")
         course_data = cur.fetchall()
         course_data = course_data[0]
-        print course_data
+        #print course_data
         cur.close()
         conn.close()
         return course_data
@@ -27,7 +27,7 @@ class Student:
         cur.execute("SELECT course_id, course_name, id, course_grade FROM takes3 NATURAL JOIN takes2 "
                     "WHERE id ='" + self.username + "';")
         course_data = cur.fetchall()
-        print course_data
+        #print course_data
         cur.close()
         conn.close()
         return course_data
@@ -38,7 +38,7 @@ class Student:
         cur = conn.cursor()
         cur.execute("SELECT assignment_id, file_path_assignment FROM assigns2 WHERE course_id= '" + cid + "';")
         assignment_list = cur.fetchall()
-        print assignment_list
+        #print assignment_list
         cur.close()
         conn.close()
         return assignment_list
@@ -49,7 +49,7 @@ class Student:
         cur = conn.cursor()
         cur.execute("SELECT resource_name, file_path_resource FROM resources WHERE course_id= '" + cid + "';")
         resource_list = cur.fetchall()
-        print resource_list
+        #print resource_list
         cur.close()
         conn.close()
         return resource_list
@@ -62,7 +62,7 @@ class Student:
                     "FROM submits1 NATURAL JOIN submits2 NATURAL JOIN submits3 WHERE course_id= '" + cid +
                     "' AND id = '" + self.username + "';")
         submission_list = cur.fetchall()
-        print submission_list
+        #print submission_list
         cur.close()
         conn.close()
         return submission_list
